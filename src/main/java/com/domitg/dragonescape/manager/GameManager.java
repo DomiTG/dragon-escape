@@ -173,6 +173,9 @@ public class GameManager {
         state = GameState.IN_GAME;
         gameTimeSeconds = 0;
 
+        // Init scoreboard first, then teleport players
+        scoreboardManager.init();
+
         // Teleport all players to spawn and prepare them
         Location spawn = mapManager.getSpawnLocation();
         for (DragonEscapePlayer dep : players.values()) {
@@ -180,12 +183,6 @@ public class GameManager {
             p.teleport(spawn);
             preparePlayer(p);
             scoreboardManager.showToPlayer(p);
-        }
-
-        // Init scoreboard
-        scoreboardManager.init();
-        for (DragonEscapePlayer dep : players.values()) {
-            scoreboardManager.showToPlayer(dep.getPlayer());
         }
 
         broadcastGame(msg("game-started"));
@@ -440,8 +437,18 @@ public class GameManager {
     }
 
     private void executeDoubleJump(Player player, DragonEscapePlayer dep) {
-        // For Scout, ability item triggers a large leap instead (manual double-jump is on jump event)
-        executeLeap(player, dep);
+        // Scout's item ability: high vertical jump with a forward burst
+        dep.startAbilityCooldown();
+
+        Vector direction = player.getLocation().getDirection().normalize().multiply(0.8);
+        direction.setY(1.2); // strong upward boost
+        player.setVelocity(direction);
+
+        player.getWorld().spawnParticle(Particle.CLOUD,
+                player.getLocation().add(0, 1, 0), 20, 0.3, 0.1, 0.3, 0.05);
+        player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 0.6f, 1.5f);
+
+        player.sendMessage(msg("prefix") + dep.getPlayerClass().getColor() + "High Jump!");
     }
 
     private void executeLeap(Player player, DragonEscapePlayer dep) {

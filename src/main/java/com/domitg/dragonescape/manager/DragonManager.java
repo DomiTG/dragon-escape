@@ -78,7 +78,7 @@ public class DragonManager {
         dragon = (EnderDragon) startLoc.getWorld().spawnEntity(startLoc, EntityType.ENDER_DRAGON);
         dragon.setCustomName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "THE DRAGON");
         dragon.setCustomNameVisible(true);
-        dragon.setPhase(DragonBattle.Phase.HOVER);
+        dragon.setPhase(EnderDragon.Phase.HOVER);
         dragon.setMaxHealth(2000);
         dragon.setHealth(2000);
         dragon.setGlowing(true);

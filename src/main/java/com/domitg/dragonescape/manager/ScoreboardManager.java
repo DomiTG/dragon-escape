@@ -110,12 +110,4 @@ public class ScoreboardManager {
     public void resetPlayerScoreboard(Player player) {
         player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }
-
-    /**
-     * Updates the scoreboard specifically for one player showing their class and ability cooldown.
-     */
-    public void updatePlayerLine(DragonEscapePlayer dep) {
-        // The sidebar is shared; individual ability cooldown is shown via action bar instead
-        // (see GameManager.tickPlayerAbilityBar)
-    }
 }

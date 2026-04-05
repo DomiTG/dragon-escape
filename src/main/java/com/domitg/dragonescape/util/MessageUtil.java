@@ -3,7 +3,7 @@ package com.domitg.dragonescape.util;
 import org.bukkit.ChatColor;
 
 /**
- * Utility class for common helper methods.
+ * Utility class for message formatting and colorization.
  */
 public final class MessageUtil {
 

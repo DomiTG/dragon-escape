@@ -165,8 +165,12 @@ public class GameListener implements Listener {
         gameManager.tryDoubleJump(player);
     }
 
+    /**
+     * Restores the Scout's double jump when they land on the ground.
+     * Uses PlayerMoveEvent to detect when the player is on the ground after being airborne.
+     */
     @EventHandler
-    public void onPlayerJump(PlayerJumpEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         DragonEscapePlayer dep = gameManager.getPlayer(player.getUniqueId());
         if (dep == null) return;
@@ -174,12 +178,11 @@ public class GameListener implements Listener {
         if (gameManager.getState() != GameState.IN_GAME) return;
         if (dep.isEliminated()) return;
 
-        // When on ground, restore double jump
+        // Restore double jump when player lands and allow flight for double jump while airborne
         if (player.isOnGround()) {
             dep.setDoubleJumpAvailable(true);
-        }
-        // Allow flight ability (double jump) when airborne and ability is available
-        if (!player.isOnGround() && dep.isDoubleJumpAvailable()) {
+            player.setAllowFlight(false);
+        } else if (dep.isDoubleJumpAvailable() && !dep.isAbilityOnCooldown()) {
             player.setAllowFlight(true);
         }
     }

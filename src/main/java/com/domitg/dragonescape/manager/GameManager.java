@@ -215,12 +215,15 @@ public class GameManager {
 
     private void spawnMarkerParticles() {
         // Checkpoint markers: cyan END_ROD ring
+        final int checkpointRingCount = 8;
+        final int finishRingCount = 12;
+
         List<Location> checkpoints = mapManager.getCheckpoints();
         for (Location cp : checkpoints) {
             World w = cp.getWorld();
             if (w == null) continue;
-            for (int i = 0; i < 8; i++) {
-                double angle = (2 * Math.PI / 8) * i;
+            for (int i = 0; i < checkpointRingCount; i++) {
+                double angle = (2 * Math.PI / checkpointRingCount) * i;
                 double ox = Math.cos(angle) * 1.5;
                 double oz = Math.sin(angle) * 1.5;
                 w.spawnParticle(Particle.END_ROD, cp.clone().add(ox, 1, oz), 1, 0, 0, 0, 0);
@@ -232,8 +235,8 @@ public class GameManager {
         Location finish = mapManager.getFinishLocation();
         if (finish != null && finish.getWorld() != null) {
             World w = finish.getWorld();
-            for (int i = 0; i < 12; i++) {
-                double angle = (2 * Math.PI / 12) * i;
+            for (int i = 0; i < finishRingCount; i++) {
+                double angle = (2 * Math.PI / finishRingCount) * i;
                 double ox = Math.cos(angle) * 2.0;
                 double oz = Math.sin(angle) * 2.0;
                 w.spawnParticle(Particle.FIREWORKS_SPARK, finish.clone().add(ox, 1, oz), 2, 0, 0.2, 0, 0.05);

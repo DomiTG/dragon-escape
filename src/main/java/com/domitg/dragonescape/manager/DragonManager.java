@@ -81,7 +81,10 @@ public class DragonManager {
         dragon.setCustomNameVisible(true);
         dragon.setPhase(EnderDragon.Phase.HOVER);
         dragon.setAI(false);
-        Objects.requireNonNull(dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(1024.0);
+        org.bukkit.attribute.AttributeInstance maxHealthAttr = dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealthAttr != null) {
+            maxHealthAttr.setBaseValue(1024.0);
+        }
         dragon.setHealth(1024.0);
         dragon.setGlowing(true);
 

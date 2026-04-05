@@ -201,7 +201,7 @@ public class DragonManager {
 
                     // Visual effect before breaking
                     world.spawnParticle(Particle.DRAGON_BREATH,
-                            block.getLocation().add(0.5, 0.5, 0.5), 3, 0.2, 0.2, 0.2, 0);
+                            block.getLocation().add(0.5, 0.5, 0.5), 3, 0.2, 0.2, 0.2, 0, 0f);
                     block.setType(Material.AIR, false);
                 }
             }

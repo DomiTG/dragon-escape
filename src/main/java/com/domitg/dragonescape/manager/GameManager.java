@@ -383,7 +383,7 @@ public class GameManager {
 
         // Particle burst at player location
         p.getWorld().spawnParticle(Particle.DRAGON_BREATH,
-                p.getLocation().add(0, 1, 0), 50, 1, 1, 1, 0.1);
+                p.getLocation().add(0, 1, 0), 50, 1, 1, 1, 0.1, 0f);
 
         checkEndConditions();
     }

@@ -44,6 +44,7 @@ public class GameManager {
     private BukkitRunnable countdownTask;
     private BukkitRunnable gameTickTask;
     private BukkitRunnable scoreboardTask;
+    private BukkitRunnable particleTask;
 
     private int countdownSeconds;
     private int gameTimeSeconds = 0;
@@ -195,6 +196,56 @@ public class GameManager {
 
         startGameTickTask();
         startScoreboardTask();
+        startParticleTask();
+    }
+
+    private void startParticleTask() {
+        particleTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (state != GameState.IN_GAME) {
+                    cancel();
+                    return;
+                }
+                spawnMarkerParticles();
+            }
+        };
+        particleTask.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    private void spawnMarkerParticles() {
+        // Checkpoint markers: cyan END_ROD ring
+        final int checkpointRingCount = 8;
+        final int finishRingCount = 12;
+
+        List<Location> checkpoints = mapManager.getCheckpoints();
+        for (Location cp : checkpoints) {
+            World w = cp.getWorld();
+            if (w == null) continue;
+            for (int i = 0; i < checkpointRingCount; i++) {
+                double angle = (2 * Math.PI / checkpointRingCount) * i;
+                double ox = Math.cos(angle) * 1.5;
+                double oz = Math.sin(angle) * 1.5;
+                w.spawnParticle(Particle.END_ROD, cp.clone().add(ox, 1, oz), 1, 0, 0, 0, 0);
+            }
+            w.spawnParticle(Particle.VILLAGER_HAPPY, cp.clone().add(0, 1, 0), 3, 0.3, 0.5, 0.3, 0);
+        }
+
+        // Finish marker: firework-like TOTEM ring + beacon column
+        Location finish = mapManager.getFinishLocation();
+        if (finish != null && finish.getWorld() != null) {
+            World w = finish.getWorld();
+            for (int i = 0; i < finishRingCount; i++) {
+                double angle = (2 * Math.PI / finishRingCount) * i;
+                double ox = Math.cos(angle) * 2.0;
+                double oz = Math.sin(angle) * 2.0;
+                w.spawnParticle(Particle.FIREWORKS_SPARK, finish.clone().add(ox, 1, oz), 2, 0, 0.2, 0, 0.05);
+            }
+            // Rising column above finish
+            for (int y = 0; y <= 4; y++) {
+                w.spawnParticle(Particle.TOTEM, finish.clone().add(0, y, 0), 2, 0.3, 0, 0.3, 0);
+            }
+        }
     }
 
     private void startGameTickTask() {
@@ -601,6 +652,7 @@ public class GameManager {
         if (countdownTask != null) { countdownTask.cancel(); countdownTask = null; }
         if (gameTickTask != null) { gameTickTask.cancel(); gameTickTask = null; }
         if (scoreboardTask != null) { scoreboardTask.cancel(); scoreboardTask = null; }
+        if (particleTask != null) { particleTask.cancel(); particleTask = null; }
     }
 
     private void broadcastGame(String message) {

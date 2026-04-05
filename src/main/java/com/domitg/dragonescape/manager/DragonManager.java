@@ -3,6 +3,7 @@ package com.domitg.dragonescape.manager;
 import com.domitg.dragonescape.DragonEscapePlugin;
 import com.domitg.dragonescape.model.DragonEscapePlayer;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -79,8 +80,12 @@ public class DragonManager {
         dragon.setCustomName(ChatColor.DARK_RED + "" + ChatColor.BOLD + "THE DRAGON");
         dragon.setCustomNameVisible(true);
         dragon.setPhase(EnderDragon.Phase.HOVER);
-        dragon.setMaxHealth(2000);
-        dragon.setHealth(2000);
+        dragon.setAI(false);
+        org.bukkit.attribute.AttributeInstance maxHealthAttr = dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (maxHealthAttr != null) {
+            maxHealthAttr.setBaseValue(1024.0);
+        }
+        dragon.setHealth(1024.0);
         dragon.setGlowing(true);
 
         pathIndex = 0;
@@ -141,17 +146,17 @@ public class DragonManager {
         double moveAmount = speedBlocksPerSecond / 20.0; // per tick
 
         if (distToNext <= moveAmount) {
-            // Advance to the next waypoint
+            // Arrive at waypoint and advance index
             pathIndex = Math.min(pathIndex + 1, path.size() - 1);
             distanceTravelled += distToNext;
-        } else {
-            // Move toward next waypoint
-            Vector velocity = direction.normalize().multiply(moveAmount);
-            dragon.setVelocity(velocity);
-
-            // Smooth rotation toward target
             float yaw = (float) (Math.toDegrees(Math.atan2(-direction.getX(), direction.getZ())));
-            Location newLoc = current.clone();
+            target.setYaw(yaw);
+            dragon.teleport(target);
+        } else {
+            // Teleport dragon toward next waypoint
+            Vector step = direction.normalize().multiply(moveAmount);
+            Location newLoc = current.clone().add(step);
+            float yaw = (float) (Math.toDegrees(Math.atan2(-direction.getX(), direction.getZ())));
             newLoc.setYaw(yaw);
             dragon.teleport(newLoc);
 

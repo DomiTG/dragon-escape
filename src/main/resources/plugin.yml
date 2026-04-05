@@ -1,0 +1,22 @@
+name: DragonEscape
+version: ${project.version}
+main: com.domitg.dragonescape.DragonEscapePlugin
+api-version: '1.20'
+description: A fast-paced parkour minigame where players must escape from the Ender Dragon.
+authors: [ DomiTG ]
+website: https://github.com/DomiTG/dragon-escape
+
+commands:
+  dragonescape:
+    description: Main Dragon Escape command
+    aliases: [ de ]
+    usage: /de <join|leave|start|stop|setlobby|setspawn|setfinish|addcheckpoint|setwaitingroom|info>
+    permission: dragonescape.player
+
+permissions:
+  dragonescape.player:
+    description: Allows a player to join Dragon Escape
+    default: true
+  dragonescape.admin:
+    description: Allows admin control over Dragon Escape
+    default: op

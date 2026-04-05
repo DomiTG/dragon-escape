@@ -1,0 +1,77 @@
+# Dragon Escape Configuration
+
+# Minimum number of players to start a game
+min-players: 2
+
+# Maximum number of players in a game
+max-players: 10
+
+# Countdown in seconds before the game starts
+start-countdown: 30
+
+# Duration in ticks the dragon waits at the start (20 ticks = 1 second)
+# Dragon starts moving after this delay
+dragon-start-delay: 100
+
+# Dragon speed multiplier (higher = faster)
+dragon-speed: 1.0
+
+# Radius (in blocks) around the dragon where terrain is destroyed
+dragon-destroy-radius: 4
+
+# How many blocks ahead of the dragon are preserved (safe zone)
+dragon-safe-distance: 10
+
+# Number of ticks between each dragon terrain destruction sweep
+dragon-destroy-interval: 5
+
+# Blocks per second the dragon moves along its path
+dragon-blocks-per-second: 4.0
+
+# Max time in seconds a game can last before forcibly ending
+game-max-duration: 600
+
+# Waiting room location (set with /de setwaitingroom)
+waiting-room:
+  world: ''
+  x: 0.0
+  y: 64.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0
+
+# Arena configuration
+arena:
+  # World where the arena is located (set with /de setspawn)
+  world: ''
+  # Spawn location for players (set with /de setspawn)
+  spawn:
+    x: 0.0
+    y: 64.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
+  # Finish portal location (set with /de setfinish)
+  finish:
+    x: 0.0
+    y: 64.0
+    z: 0.0
+  # Checkpoints along the dragon path (set with /de addcheckpoint)
+  checkpoints: []
+
+# Messages
+messages:
+  prefix: '&8[&cDragonEscape&8] &r'
+  game-starting: '&aGame starting in &e{time} &aseconds!'
+  game-started: '&cRun! The dragon is approaching!'
+  player-joined: '&e{player} &ajoined the game! &7({current}/{max})'
+  player-left: '&e{player} &cleft the game.'
+  player-eliminated: '&c{player} &7was eliminated by the dragon!'
+  player-won: '&6{player} &aescaped the dragon and &6WON&a!'
+  game-ended-no-winner: '&cThe dragon consumed everyone! No survivors!'
+  game-ended-winners: '&6Game over! Winners: &a{winners}'
+  not-enough-players: '&cNot enough players to start the game!'
+  already-in-game: '&cYou are already in a game!'
+  not-in-game: '&cYou are not in a game!'
+  game-full: '&cThe game is full!'
+  no-arena-configured: '&cThe arena is not fully configured yet!'
